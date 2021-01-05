@@ -21,7 +21,7 @@ public void WriteDynamicCSV(IEnumerable<dynamic> dataList, string path, string d
 			if (headerSet == false)
 			{
 				//Write the keys (header) of the CSV
-				tw.WriteLine(string.Join(delim, row.Keys.ToArray().Select(k => "\"" + k + "\"").ToArray()));
+				tw.WriteLine(string.Join(delim, row.Keys.Select(k => "\"" + k + "\"").ToArray()));
 				headerSet = true;
 			}
 
