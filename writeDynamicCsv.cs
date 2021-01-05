@@ -14,7 +14,7 @@ public void WriteDynamicCSV(IEnumerable<dynamic> dataList, string path, string d
 
 		foreach (var rowDynamic in dataList)
 		{
-			//Dapper implements IEnumerable<dynamic> as an IDictionary<string, object>
+			//Dapper implements the dynamic portion of its enumerable as an IDictionary<string, object>
 			var row = rowDynamic as IDictionary<string, object>;
 
 			//If the header hasn't been set yet
