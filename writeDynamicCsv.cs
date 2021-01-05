@@ -7,26 +7,26 @@
 /// <returns></returns>
 public void WriteDynamicCSV(IEnumerable<dynamic> dataList, string path, string delim = ",")
 {
-	using (TextWriter tw = System.IO.File.CreateText(path))
+    using (TextWriter tw = System.IO.File.CreateText(path))
+    {
+	//header set flag
+	bool headerSet = false;
+
+	foreach (var rowDynamic in dataList)
 	{
-		//header set flag
-		bool headerSet = false;
+	    //Dapper implements the dynamic portion of its enumerable as an IDictionary<string, object>
+	    var row = rowDynamic as IDictionary<string, object>;
 
-		foreach (var rowDynamic in dataList)
-		{
-			//Dapper implements the dynamic portion of its enumerable as an IDictionary<string, object>
-			var row = rowDynamic as IDictionary<string, object>;
+	    //If the header hasn't been set yet
+	    if (headerSet == false)
+	    {
+		//Write the keys (header) of the CSV
+		tw.WriteLine(string.Join(delim, row.Keys.Select(k => "\"" + k + "\"").ToArray()));
+		headerSet = true;
+	    }
 
-			//If the header hasn't been set yet
-			if (headerSet == false)
-			{
-				//Write the keys (header) of the CSV
-				tw.WriteLine(string.Join(delim, row.Keys.Select(k => "\"" + k + "\"").ToArray()));
-				headerSet = true;
-			}
-
-			//Write the values to the CSV
-			tw.WriteLine(string.Join(delim, row.Values.Select(r => (r == null) ? "\"\"" : "\"" + r.ToString() + "\"")));
-		}
+	    //Write the values to the CSV
+	    tw.WriteLine(string.Join(delim, row.Values.Select(v => (v == null) ? "\"\"" : "\"" + v.ToString() + "\"")));
 	}
+    }
 }
